@@ -85,7 +85,7 @@ const EditSalidaCampoModal: React.FC<EditSalidaCampoModalProps> = ({ isOpen, onC
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-black/30 flex items-center justify-center">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
         <h2 className="text-2xl font-bold mb-4">Editar Salida de Campo</h2>
         <form onSubmit={handleSubmit}>

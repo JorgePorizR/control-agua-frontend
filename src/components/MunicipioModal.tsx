@@ -45,7 +45,7 @@ const MunicipioModal: React.FC<MunicipioModalProps> = ({
     const { name, value } = e.target;
     setForm((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: name === "id_departamento" ? Number(value) : value,
     }));
   };
 
@@ -54,6 +54,7 @@ const MunicipioModal: React.FC<MunicipioModalProps> = ({
     setLoading(true);
     setError("");
     try {
+      console.log("Datos enviados:", form);
       await createMunicipio(form);
       setForm(initialState);
       onMunicipioCreated();
@@ -109,7 +110,7 @@ const MunicipioModal: React.FC<MunicipioModalProps> = ({
               required
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
             >
-              <option value="" disabled>
+              <option value={0} disabled>
                 Seleccione un departamento
               </option>
               {departamentos.map((departamento) => (
