@@ -133,117 +133,119 @@ const UserGestion: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-200 via-blue-300 to-cyan-200 flex flex-col items-center py-10 relative">
+    <div className="min-h-screen bg-gradient-to-br from-blue-200 via-blue-300 to-cyan-200 flex flex-col items-center relative">
       <Navbar />
-      <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl border border-blue-100 w-full max-w-5xl p-8">
-        <h2 className="text-3xl font-extrabold text-blue-700 mb-6 text-center flex items-center justify-center">
-          <WaterDropIcon /> Gestión de Usuarios
-        </h2>
-        {error && (
-          <div className="mb-4 text-red-500 text-center font-semibold">
-            {error}
-          </div>
-        )}
-        {loading ? (
-          <div className="text-blue-500 text-center font-bold">
-            Cargando usuarios...
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="min-w-full bg-white rounded-lg shadow-md">
-              <thead>
-                <tr className="bg-gradient-to-r from-sky-400 to-cyan-500 text-white">
-                  <th className="py-3 px-4 rounded-tl-lg">ID</th>
-                  <th className="py-3 px-4">Nombre</th>
-                  <th className="py-3 px-4">Apellido</th>
-                  <th className="py-3 px-4">Correo</th>
-                  <th className="py-3 px-4">Rol</th>
-                  <th className="py-3 px-4">Activo</th>
-                  <th className="py-3 px-4">Editar</th>
-                  <th className="py-3 px-4 rounded-tr-lg">Eliminar</th>
-                </tr>
-              </thead>
-              <tbody>
-                {usuarios.map((usuario) => (
-                  <tr
-                    key={usuario.id_usuario}
-                    className="even:bg-blue-50 hover:bg-cyan-100 transition-colors"
-                  >
-                    <td className="py-2 px-4 text-center font-mono">
-                      {usuario.id_usuario}
-                    </td>
-                    <td className="py-2 px-4">{usuario.nombre}</td>
-                    <td className="py-2 px-4">{usuario.apellido}</td>
-                    <td className="py-2 px-4">{usuario.email}</td>
-                    <td className="py-2 px-4 text-center">
-                      <span className="inline-block px-2 py-1 rounded bg-blue-100 text-blue-700 text-xs font-semibold">
-                        {usuario.rol}
-                      </span>
-                    </td>
-                    <td className="py-2 px-4 text-center">
-                      {usuario.es_activo ? (
-                        <span
-                          className="inline-block w-3 h-3 rounded-full bg-green-400"
-                          title="Activo"
-                        ></span>
-                      ) : (
-                        <span
-                          className="inline-block w-3 h-3 rounded-full bg-red-400"
-                          title="Inactivo"
-                        ></span>
-                      )}
-                    </td>
-                    <td className="py-2 px-4 text-center">
-                      <button
-                        onClick={() => handleEditClick(usuario)}
-                        className="p-2 rounded-full hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-sky-300"
-                        title="Editar usuario"
-                      >
-                        <EditIcon />
-                      </button>
-                    </td>
-                    <td className="py-2 px-4 text-center">
-                      <button
-                        onClick={() => handleDeleteClick(usuario)}
-                        className="p-2 rounded-full hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-300"
-                        title="Eliminar usuario"
-                      >
-                        <DeleteIcon />
-                      </button>
-                    </td>
+      <div className="py-10">
+        <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl border border-blue-100 w-full max-w-5xl p-8">
+          <h2 className="text-3xl font-extrabold text-blue-700 mb-6 text-center flex items-center justify-center">
+            <WaterDropIcon /> Gestión de Usuarios
+          </h2>
+          {error && (
+            <div className="mb-4 text-red-500 text-center font-semibold">
+              {error}
+            </div>
+          )}
+          {loading ? (
+            <div className="text-blue-500 text-center font-bold">
+              Cargando usuarios...
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full bg-white rounded-lg shadow-md">
+                <thead>
+                  <tr className="bg-gradient-to-r from-sky-400 to-cyan-500 text-white">
+                    <th className="py-3 px-4 rounded-tl-lg">ID</th>
+                    <th className="py-3 px-4">Nombre</th>
+                    <th className="py-3 px-4">Apellido</th>
+                    <th className="py-3 px-4">Correo</th>
+                    <th className="py-3 px-4">Rol</th>
+                    <th className="py-3 px-4">Activo</th>
+                    <th className="py-3 px-4">Editar</th>
+                    <th className="py-3 px-4 rounded-tr-lg">Eliminar</th>
                   </tr>
-                ))}
-                {usuarios.length === 0 && (
-                  <tr>
-                    <td colSpan={9} className="py-6 text-center text-blue-400">
-                      No hay usuarios registrados.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        )}
+                </thead>
+                <tbody>
+                  {usuarios.map((usuario) => (
+                    <tr
+                      key={usuario.id_usuario}
+                      className="even:bg-blue-50 hover:bg-cyan-100 transition-colors"
+                    >
+                      <td className="py-2 px-4 text-center font-mono">
+                        {usuario.id_usuario}
+                      </td>
+                      <td className="py-2 px-4">{usuario.nombre}</td>
+                      <td className="py-2 px-4">{usuario.apellido}</td>
+                      <td className="py-2 px-4">{usuario.email}</td>
+                      <td className="py-2 px-4 text-center">
+                        <span className="inline-block px-2 py-1 rounded bg-blue-100 text-blue-700 text-xs font-semibold">
+                          {usuario.rol}
+                        </span>
+                      </td>
+                      <td className="py-2 px-4 text-center">
+                        {usuario.es_activo ? (
+                          <span
+                            className="inline-block w-3 h-3 rounded-full bg-green-400"
+                            title="Activo"
+                          ></span>
+                        ) : (
+                          <span
+                            className="inline-block w-3 h-3 rounded-full bg-red-400"
+                            title="Inactivo"
+                          ></span>
+                        )}
+                      </td>
+                      <td className="py-2 px-4 text-center">
+                        <button
+                          onClick={() => handleEditClick(usuario)}
+                          className="p-2 rounded-full hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-sky-300"
+                          title="Editar usuario"
+                        >
+                          <EditIcon />
+                        </button>
+                      </td>
+                      <td className="py-2 px-4 text-center">
+                        <button
+                          onClick={() => handleDeleteClick(usuario)}
+                          className="p-2 rounded-full hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-300"
+                          title="Eliminar usuario"
+                        >
+                          <DeleteIcon />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                  {usuarios.length === 0 && (
+                    <tr>
+                      <td colSpan={9} className="py-6 text-center text-blue-400">
+                        No hay usuarios registrados.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+        {/* Botón flotante para crear usuario */}
+        <button
+          onClick={() => setModalOpen(true)}
+          className="fixed bottom-8 right-8 bg-sky-400 hover:bg-sky-500 text-white rounded-full shadow-lg p-4 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-sky-300 z-50"
+          title="Crear usuario"
+        >
+          <PlusIcon />
+        </button>
+        <UserModal
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          onUserCreated={fetchUsers}
+        />
+        <EditUserModal
+          isOpen={editModalOpen}
+          onClose={() => setEditModalOpen(false)}
+          user={userToEdit}
+          onUserUpdated={fetchUsers}
+        />
       </div>
-      {/* Botón flotante para crear usuario */}
-      <button
-        onClick={() => setModalOpen(true)}
-        className="fixed bottom-8 right-8 bg-sky-400 hover:bg-sky-500 text-white rounded-full shadow-lg p-4 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-sky-300 z-50"
-        title="Crear usuario"
-      >
-        <PlusIcon />
-      </button>
-      <UserModal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onUserCreated={fetchUsers}
-      />
-      <EditUserModal
-        isOpen={editModalOpen}
-        onClose={() => setEditModalOpen(false)}
-        user={userToEdit}
-        onUserUpdated={fetchUsers}
-      />
     </div>
   );
 };

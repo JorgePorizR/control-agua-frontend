@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { login } from "../services/authService";
 import type { LoginCredentials } from "../services/authService";
+import { useNavigate } from "react-router-dom";
 
 const WaterDropIcon = () => (
   <svg
@@ -32,6 +33,7 @@ const WaterDropIcon = () => (
 );
 
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -58,7 +60,8 @@ const LoginPage: React.FC = () => {
           es_admin: receivedToken.es_admin,
         })
       );
-
+      // redirigir a la página de gestión de usuarios
+      navigate("/usuarios");
       //console.log(receivedToken);
     } catch (err: unknown) {
       if (
