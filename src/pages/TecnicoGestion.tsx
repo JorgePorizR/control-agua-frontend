@@ -7,6 +7,7 @@ import {
 import { getUserById, type Usuario } from "../services/userService";
 import Navbar from "../components/Navbar";
 import { getMuestreosByTecnico, type Muestreo, createMuestreo, updateMuestreo } from "../services/muestreoService";
+import { useNavigate } from "react-router-dom";
 
 // Modal para crear muestreo
 interface CrearMuestreoModalProps {
@@ -422,6 +423,7 @@ const MuestreoCard: React.FC<MuestreoCardProps> = ({ muestreo, salida, cuerpoAgu
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     setEditObs(muestreo.observaciones || "");
@@ -477,6 +479,14 @@ const MuestreoCard: React.FC<MuestreoCardProps> = ({ muestreo, salida, cuerpoAgu
       </div>
       <div className="mb-2 text-sm text-gray-500">
         <span className="font-semibold">Cuerpo de Agua:</span> {cuerpoAgua?.nombre || "-"} <span className="text-xs text-gray-400">(ID: {muestreo.id_cuerpo_agua})</span>
+      </div>
+      <div className="mt-4 flex justify-end">
+        <button
+          className="bg-cyan-600 text-white px-4 py-2 rounded-lg shadow hover:bg-cyan-700 transition-colors"
+          onClick={() => navigate(`/analisis-muestreo/${muestreo.id_muestreo}`)}
+        >
+          Ir a Análisis
+        </button>
       </div>
     </div>
   );

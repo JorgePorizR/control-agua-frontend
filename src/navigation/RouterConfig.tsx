@@ -7,6 +7,7 @@ import CuerpoAguaGestion from "../pages/CuerpoAguaGestion";
 import GaleriaCuerpoAgua from "../pages/GaleriaCuerpoAgua";
 import SalidaCampoGestion from "../pages/SalidaCampoGestion";
 import TecnicoGestion from "../pages/TecnicoGestion";
+import AnalisisMuestreo from "../pages/AnalisisMuestreo";
 
 export const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
   {
     path: "/mis-salidas",
     element: <TecnicoGestion />,
+  },
+  {
+    path: "/analisis-muestreo/:id",
+    element: <AnalisisMuestreo />,
   },
   {
     path: "*",
