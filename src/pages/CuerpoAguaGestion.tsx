@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import { listCuerposAgua, type CuerpoAgua } from "../services/cuerpoAguaService";
+import {
+  listCuerposAgua,
+  type CuerpoAgua,
+} from "../services/cuerpoAguaService";
 import { listComunidades, type Comunidad } from "../services/ubicacionService";
 import CuerpoAguaModal from "../components/CuerpoAguaModal";
 import EditCuerpoAguaModal from "../components/EditCuerpoAguaModal";
+import { useNavigate } from "react-router-dom";
 
 const PlusCircle = () => (
   <svg
@@ -40,14 +44,34 @@ const EditIcon = () => (
   </svg>
 );
 
+const ImgIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="size-6"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+    />
+  </svg>
+);
+
 const CuerpoAguaGestion: React.FC = () => {
   const [cuerposAgua, setCuerposAgua] = useState<CuerpoAgua[]>([]);
   const [comunidades, setComunidades] = useState<Comunidad[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCuerpoAgua, setSelectedCuerpoAgua] = useState<CuerpoAgua | null>(null);
+  const [selectedCuerpoAgua, setSelectedCuerpoAgua] =
+    useState<CuerpoAgua | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   const fetchCuerposAgua = async () => {
     setLoading(true);
@@ -73,7 +97,7 @@ const CuerpoAguaGestion: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     fetchCuerposAgua();
@@ -81,8 +105,8 @@ const CuerpoAguaGestion: React.FC = () => {
   }, []);
 
   const getComunidadById = (id: number) => {
-    return comunidades.find(comunidad => comunidad.id_comunidad === id);
-  }
+    return comunidades.find((comunidad) => comunidad.id_comunidad === id);
+  };
 
   const handleModalOpen = () => setIsModalOpen(true);
   const handleModalClose = () => setIsModalOpen(false);
@@ -142,19 +166,34 @@ const CuerpoAguaGestion: React.FC = () => {
               <td className="py-2 px-4">{cuerpo.nombre}</td>
               <td className="py-2 px-4">{cuerpo.descripcion}</td>
               <td className="py-2 px-4">{cuerpo.tipo}</td>
-              <td className="py-2 px-4 text-center"><span>{cuerpo.latitud}</span>,<span>{cuerpo.longitud}</span></td>
-              <td className="py-2 px-4">{cuerpo.ubicacion_descripcion}</td>
-              <td className="py-2 px-4">{new Date(cuerpo.fecha_registro).toLocaleDateString("es-ES")}</td>
-              <td className="py-2 px-4">
-                {cuerpo.id_comunidad ? getComunidadById(cuerpo.id_comunidad)?.nombre : "N/A"}
-              </td>
               <td className="py-2 px-4 text-center">
+                <span>{cuerpo.latitud}</span>,<span>{cuerpo.longitud}</span>
+              </td>
+              <td className="py-2 px-4">{cuerpo.ubicacion_descripcion}</td>
+              <td className="py-2 px-4">
+                {new Date(cuerpo.fecha_registro).toLocaleDateString("es-ES")}
+              </td>
+              <td className="py-2 px-4">
+                {cuerpo.id_comunidad
+                  ? getComunidadById(cuerpo.id_comunidad)?.nombre
+                  : "N/A"}
+              </td>
+              <td className="py-2 px-4 text-center gap-2 flex justify-center">
                 <button
                   onClick={() => handleEditModalOpen(cuerpo)}
                   className="text-blue-500 hover:text-blue-700"
                   title="Editar Cuerpo de Agua"
                 >
                   <EditIcon />
+                </button>
+                <button
+                  onClick={() =>
+                    navigate(`/cuerpos-agua/${cuerpo.id_cuerpo_agua}`)
+                  }
+                  className="text-green-500 hover:text-green-700"
+                  title="Ver Galería"
+                >
+                  <ImgIcon />
                 </button>
               </td>
             </tr>
@@ -191,19 +230,18 @@ const CuerpoAguaGestion: React.FC = () => {
           ) : (
             renderCuerposAguaTable()
           )}
-          
         </div>
-          <CuerpoAguaModal
-            isOpen={isModalOpen}
-            onClose={handleModalClose}
-            onCuerpoAguaCreated={handleCuerpoAguaCreated}
-          />
-          <EditCuerpoAguaModal
-            isOpen={isEditModalOpen}
-            onClose={handleEditModalClose}
-            cuerpoAgua={selectedCuerpoAgua}
-            onCuerpoAguaUpdated={handleCuerpoAguaUpdated}
-          />
+        <CuerpoAguaModal
+          isOpen={isModalOpen}
+          onClose={handleModalClose}
+          onCuerpoAguaCreated={handleCuerpoAguaCreated}
+        />
+        <EditCuerpoAguaModal
+          isOpen={isEditModalOpen}
+          onClose={handleEditModalClose}
+          cuerpoAgua={selectedCuerpoAgua}
+          onCuerpoAguaUpdated={handleCuerpoAguaUpdated}
+        />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api";
+const API_URL = import.meta.env.VITE_API_URL as string;
 
 export interface RegisterCredentials {
   nombre: string;
@@ -31,6 +31,7 @@ export interface UsuarioUpdate {
 }
 
 export async function listUsers(): Promise<Usuario[]> {
+  console.log("Logging in with credentials:", API_URL);
   const response = await axios.get(`${API_URL}/usuarios`, {
     headers: {
       Authorization: `Bearer ${sessionStorage.getItem("token")}`,
