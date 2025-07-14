@@ -61,7 +61,11 @@ const LoginPage: React.FC = () => {
         })
       );
       // redirigir a la página de gestión de usuarios
-      navigate("/usuarios");
+      if (receivedToken.rol === "ADMIN") {
+        navigate("/usuarios");
+      } else {
+        navigate("/mis-salidas");
+      }
       //console.log(receivedToken);
     } catch (err: unknown) {
       if (

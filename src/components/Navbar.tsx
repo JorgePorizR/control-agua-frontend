@@ -83,7 +83,7 @@ const Navbar: React.FC = () => {
         </span>
       </div>
       {/* Centro: Navegación */}
-      {user ? (
+      {user && user.rol === "ADMIN" ? (
         <div className="flex-1 flex justify-center gap-4">
           <a
             href="/usuarios"
@@ -111,7 +111,14 @@ const Navbar: React.FC = () => {
           </a>
         </div>
       ) : (
-        <> </>
+        <div className="flex-1 flex justify-center gap-4">
+          <a
+            href="/mis-salidas"
+            className="text-blue-700 font-semibold px-4 py-2 rounded hover:bg-blue-100 transition-colors"
+          >
+            Mis Salidas
+          </a>
+        </div>
       )}
       {/* Derecha: Login o usuario */}
       <div className="flex items-center min-w-[120px]">

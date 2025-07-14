@@ -81,3 +81,21 @@ export const deleteSalidaCampo = async (id: number): Promise<void> => {
     },
   });
 };
+
+export const getSalidaComunidadId = async (id: number): Promise<SalidaCampo> => {
+  const response = await axios.get(`${API_URL}/salidas-campo/por-comunidad/${id}`, {
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+    },
+  });
+  return response.data;
+};
+
+export const getSalidaTecnicoId = async (id: number): Promise<SalidaCampo> => {
+  const response = await axios.get(`${API_URL}/salidas-campo/por-tecnico/${id}`, {
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+    },
+  });
+  return response.data;
+};

@@ -69,3 +69,12 @@ export async function deleteMuestreo(id: number): Promise<void> {
     },
   });
 }
+
+export async function getMuestreosByTecnico(id: number): Promise<Muestreo[]> {
+  const response = await axios.get(`${API_URL}/muestreos/tecnico/${id}`, {
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+    },
+  });
+  return response.data;
+}

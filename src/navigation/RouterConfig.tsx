@@ -6,6 +6,7 @@ import UbicacionGestion from "../pages/UbicacionGestion";
 import CuerpoAguaGestion from "../pages/CuerpoAguaGestion";
 import GaleriaCuerpoAgua from "../pages/GaleriaCuerpoAgua";
 import SalidaCampoGestion from "../pages/SalidaCampoGestion";
+import TecnicoGestion from "../pages/TecnicoGestion";
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
   {
     path: "/salidas-campo",
     element: <SalidaCampoGestion />,
+  },
+  {
+    path: "/mis-salidas",
+    element: <TecnicoGestion />,
   },
   {
     path: "*",
