@@ -3,11 +3,22 @@ import Navbar from "../components/Navbar";
 import {
   listCuerposAgua,
   type CuerpoAgua,
+  listCuerposAguaByDepartamentoId,
+  listCuerposAguaByMunicipioId,
 } from "../services/cuerpoAguaService";
-import { listComunidades, type Comunidad } from "../services/ubicacionService";
+import {
+  listComunidades,
+  type Comunidad,
+} from "../services/ubicacionService";
 import CuerpoAguaModal from "../components/CuerpoAguaModal";
 import EditCuerpoAguaModal from "../components/EditCuerpoAguaModal";
 import { useNavigate } from "react-router-dom";
+import {
+  listDepartamentos,
+  type Departamento,
+  listMunicipios,
+  type Municipio,
+} from "../services/ubicacionService";
 
 const PlusCircle = () => (
   <svg
@@ -70,6 +81,10 @@ const CuerpoAguaGestion: React.FC = () => {
   const [selectedCuerpoAgua, setSelectedCuerpoAgua] =
     useState<CuerpoAgua | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedDepartamento, setSelectedDepartamento] = useState<number | null>(null);
+  const [selectedMunicipio, setSelectedMunicipio] = useState<number | null>(null);
+  const [departamentos, setDepartamentos] = useState<Departamento[]>([]);
+  const [municipios, setMunicipios] = useState<Municipio[]>([]);
 
   const navigate = useNavigate();
 
@@ -99,9 +114,29 @@ const CuerpoAguaGestion: React.FC = () => {
     }
   };
 
+  const fetchDepartamentos = async () => {
+    try {
+      const data = await listDepartamentos();
+      setDepartamentos(data);
+    } catch {
+      setError("No se pudieron cargar los departamentos");
+    }
+  };
+
+  const fetchMunicipios = async () => {
+    try {
+      const data = await listMunicipios();
+      setMunicipios(data);
+    } catch {
+      setError("No se pudieron cargar los municipios");
+    }
+  };
+
   useEffect(() => {
     fetchCuerposAgua();
     fetchComunidades();
+    fetchDepartamentos();
+    fetchMunicipios();
   }, []);
 
   const getComunidadById = (id: number) => {
@@ -128,6 +163,68 @@ const CuerpoAguaGestion: React.FC = () => {
   const handleCuerpoAguaUpdated = () => {
     fetchCuerposAgua();
   };
+
+  const handleDepartamentoChange = async (departamentoId: number | null) => {
+    setSelectedDepartamento(departamentoId);
+    setSelectedMunicipio(null); // Reset Municipio filter
+
+    if (departamentoId !== null) {
+      try {
+        const data = await listCuerposAguaByDepartamentoId(departamentoId);
+        setCuerposAgua(data);
+      } catch {
+        setError("No se pudieron cargar los cuerpos de agua por departamento");
+      }
+    } else {
+      fetchCuerposAgua(); // Reset to all Cuerpos de Agua
+    }
+  };
+
+  const handleMunicipioChange = async (municipioId: number | null) => {
+    setSelectedMunicipio(municipioId);
+    setSelectedDepartamento(null); // Reset Departamento filter
+
+    if (municipioId !== null) {
+      try {
+        const data = await listCuerposAguaByMunicipioId(municipioId);
+        setCuerposAgua(data);
+      } catch {
+        setError("No se pudieron cargar los cuerpos de agua por municipio");
+      }
+    } else {
+      fetchCuerposAgua(); // Reset to all Cuerpos de Agua
+    }
+  };
+
+  const renderFilters = () => (
+    <div className="flex gap-4 mb-4">
+      <select
+        value={selectedDepartamento ?? ""}
+        onChange={(e) => handleDepartamentoChange(e.target.value ? Number(e.target.value) : null)}
+        className="border rounded px-4 py-2"
+      >
+        <option value="">Todos los Departamentos</option>
+        {departamentos.map((dep) => (
+          <option key={dep.id_departamento} value={dep.id_departamento}>
+            {dep.nombre}
+          </option>
+        ))}
+      </select>
+
+      <select
+        value={selectedMunicipio ?? ""}
+        onChange={(e) => handleMunicipioChange(e.target.value ? Number(e.target.value) : null)}
+        className="border rounded px-4 py-2"
+      >
+        <option value="">Todos los Municipios</option>
+        {municipios.map((mun) => (
+          <option key={mun.id_municipio} value={mun.id_municipio}>
+            {mun.nombre}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
 
   const renderCuerposAguaTable = () => (
     <div className="overflow-x-auto">
@@ -228,7 +325,10 @@ const CuerpoAguaGestion: React.FC = () => {
               Cargando cuerpos de agua...
             </div>
           ) : (
-            renderCuerposAguaTable()
+            <>
+              {renderFilters()}
+              {renderCuerposAguaTable()}
+            </>
           )}
         </div>
         <CuerpoAguaModal

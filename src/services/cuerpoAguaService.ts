@@ -79,3 +79,21 @@ export async function deleteCuerpoAgua(id: number): Promise<void> {
     },
   });
 }
+
+export async function listCuerposAguaByDepartamentoId(departamentoId: number): Promise<CuerpoAgua[]> {
+  const response = await axios.get(`${API_URL}/cuerpos-agua/departamento/${departamentoId}`, {
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+    },
+  });
+  return response.data;
+}
+
+export async function listCuerposAguaByMunicipioId(municipioId: number): Promise<CuerpoAgua[]> {
+  const response = await axios.get(`${API_URL}/cuerpos-agua/municipio/${municipioId}`, {
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+    },
+  });
+  return response.data;
+}
