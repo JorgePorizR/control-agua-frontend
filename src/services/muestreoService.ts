@@ -25,3 +25,47 @@ export interface MuestreoUpdate {
   id_cuerpo_agua?: number
   id_tecnico?: number
 }
+
+export async function listMuestreos(): Promise<Muestreo[]> {
+  const response = await axios.get(`${API_URL}/muestreos`, {
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+    },
+  });
+  return response.data;
+}
+
+export async function getMuestreoById(id: number): Promise<Muestreo> {
+  const response = await axios.get(`${API_URL}/muestreos/${id}`, {
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+    },
+  });
+  return response.data;
+}
+
+export async function createMuestreo(data: MuestreoCreate): Promise<Muestreo> {
+  const response = await axios.post(`${API_URL}/muestreos`, data, {
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+    },
+  });
+  return response.data;
+}
+
+export async function updateMuestreo(id: number, data: MuestreoUpdate): Promise<Muestreo> {
+  const response = await axios.patch(`${API_URL}/muestreos/${id}`, data, {
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+    },
+  });
+  return response.data;
+}
+
+export async function deleteMuestreo(id: number): Promise<void> {
+  await axios.delete(`${API_URL}/muestreos/${id}`, {
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+    },
+  });
+}

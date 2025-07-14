@@ -3,12 +3,15 @@ import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { listImagenesCuerpoAgua, type ImagenCuerpoAgua, deleteImagenCuerpoAgua } from "../services/ImgCuerpoAguaService";
 import UploadImageModal from "../components/UploadImageModal";
+import { getCuerpoAguaById, type CuerpoAgua } from "../services/cuerpoAguaService";
+import StaticMapComponent from "../components/StaticMapComponent";
 
 const API_URL = import.meta.env.VITE_API_URL_IMG as string;
 
 const GaleriaCuerpoAgua: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [imagenes, setImagenes] = useState<ImagenCuerpoAgua[]>([]);
+  const [cuerpoAgua, setCuerpoAgua] = useState<CuerpoAgua | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,9 +30,24 @@ const GaleriaCuerpoAgua: React.FC = () => {
     }
   }, [id]);
 
+  const fetchCuerpoAgua = useCallback(async () => {
+    if (!id) return;
+    setLoading(true);
+    setError("");
+    try {
+      const data = await getCuerpoAguaById(Number(id));
+      setCuerpoAgua(data);
+    } catch {
+      setError("No se pudieron cargar los datos del cuerpo de agua");
+    } finally {
+      setLoading(false);
+    }
+  }, [id]);
+
   useEffect(() => {
     fetchImagenes();
-  }, [id, fetchImagenes]);
+    fetchCuerpoAgua();
+  }, [id, fetchImagenes, fetchCuerpoAgua]);
 
   const handleModalOpen = () => setIsModalOpen(true);
   const handleModalClose = () => setIsModalOpen(false);
@@ -63,37 +81,54 @@ const GaleriaCuerpoAgua: React.FC = () => {
           )}
           {loading ? (
             <div className="text-blue-500 text-center font-bold">
-              Cargando imágenes...
+              Cargando datos...
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {imagenes.map((imagen) => (
-                <div key={imagen.id_imagen} className="bg-white rounded-lg shadow-md overflow-hidden">
-                  <img
-                    src={API_URL+imagen.ruta_archivo}
-                    alt={imagen.descripcion}
-                    className="w-full h-48 object-cover"
+            <>
+              {cuerpoAgua && (
+                <div className="mb-6">
+                  <h3 className="text-2xl font-bold text-blue-600 mb-4">
+                    {cuerpoAgua.nombre}
+                  </h3>
+                  <p className="text-gray-700 mb-2">{cuerpoAgua.descripcion}</p>
+                  <p className="text-gray-500 mb-4">
+                    Ubicación: {cuerpoAgua.ubicacion_descripcion}
+                  </p>
+                  <StaticMapComponent
+                    lat={cuerpoAgua.latitud}
+                    lng={cuerpoAgua.longitud}
                   />
-                  <div className="p-4 flex justify-between items-center">
-                    <div>
-                      <p className="text-sm text-gray-700">{imagen.descripcion}</p>
-                      <p className="text-xs text-gray-500 mt-2">
-                        Subida el: {new Date(imagen.fecha_subida).toLocaleDateString("es-ES")}
-                      </p>
-                    </div>
-                    <button
-                      onClick={() => handleDeleteImage(imagen.id_imagen)}
-                      className="text-red-500 hover:text-red-700"
-                    >
-                      Eliminar
-                    </button>
-                  </div>
                 </div>
-              ))}
-              {imagenes.length === 0 && (
-                <p className="text-center text-blue-400">No hay imágenes disponibles.</p>
               )}
-            </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {imagenes.map((imagen) => (
+                  <div key={imagen.id_imagen} className="bg-white rounded-lg shadow-md overflow-hidden">
+                    <img
+                      src={API_URL+imagen.ruta_archivo}
+                      alt={imagen.descripcion}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-4 flex justify-between items-center">
+                      <div>
+                        <p className="text-sm text-gray-700">{imagen.descripcion}</p>
+                        <p className="text-xs text-gray-500 mt-2">
+                          Subida el: {new Date(imagen.fecha_subida).toLocaleDateString("es-ES")}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => handleDeleteImage(imagen.id_imagen)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                {imagenes.length === 0 && (
+                  <p className="text-center text-blue-400">No hay imágenes disponibles.</p>
+                )}
+              </div>
+            </>
           )}
           <div className="flex justify-end mb-4">
             <button

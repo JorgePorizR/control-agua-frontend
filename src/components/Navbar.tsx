@@ -103,6 +103,12 @@ const Navbar: React.FC = () => {
           >
             Cuerpos de Agua
           </a>
+          <a
+            href="/salidas-campo"
+            className="text-blue-700 font-semibold px-4 py-2 rounded hover:bg-blue-100 transition-colors"
+          >
+            Salidas de Campo
+          </a>
         </div>
       ) : (
         <> </>

@@ -31,7 +31,6 @@ export interface UsuarioUpdate {
 }
 
 export async function listUsers(): Promise<Usuario[]> {
-  console.log("Logging in with credentials:", API_URL);
   const response = await axios.get(`${API_URL}/usuarios`, {
     headers: {
       Authorization: `Bearer ${sessionStorage.getItem("token")}`,
