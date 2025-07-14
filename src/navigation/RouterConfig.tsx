@@ -3,6 +3,8 @@ import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import UserGestion from "../pages/UserGestion";
 import UbicacionGestion from "../pages/UbicacionGestion";
+import MapComponent from "../components/MapComponent";
+import CuerpoAguaGestion from "../pages/CuerpoAguaGestion";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +22,14 @@ export const router = createBrowserRouter([
   {
     path: "/ubicaciones",
     element: <UbicacionGestion />,
+  },
+  {
+    path: "/cuerpos-agua",
+    element: <CuerpoAguaGestion />,
+  },
+  {
+    path: "/map",
+    element: <MapComponent />,
   },
   {
     path: "*",

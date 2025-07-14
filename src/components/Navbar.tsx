@@ -83,20 +83,30 @@ const Navbar: React.FC = () => {
         </span>
       </div>
       {/* Centro: Navegación */}
-      <div className="flex-1 flex justify-center gap-4">
-        <a
-          href="/usuarios"
-          className="text-blue-700 font-semibold px-4 py-2 rounded hover:bg-blue-100 transition-colors"
-        >
-          Usuarios
-        </a>
-        <a
-          href="/ubicaciones"
-          className="text-blue-700 font-semibold px-4 py-2 rounded hover:bg-blue-100 transition-colors"
-        >
-          Ubicaciones
-        </a>
-      </div>
+      {user ? (
+        <div className="flex-1 flex justify-center gap-4">
+          <a
+            href="/usuarios"
+            className="text-blue-700 font-semibold px-4 py-2 rounded hover:bg-blue-100 transition-colors"
+          >
+            Usuarios
+          </a>
+          <a
+            href="/ubicaciones"
+            className="text-blue-700 font-semibold px-4 py-2 rounded hover:bg-blue-100 transition-colors"
+          >
+            Ubicaciones
+          </a>
+          <a
+            href="/cuerpos-agua"
+            className="text-blue-700 font-semibold px-4 py-2 rounded hover:bg-blue-100 transition-colors"
+          >
+            Cuerpos de Agua
+          </a>
+        </div>
+      ) : (
+        <> </>
+      )}
       {/* Derecha: Login o usuario */}
       <div className="flex items-center min-w-[120px]">
         {!user ? (
